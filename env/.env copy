@@ -8,13 +8,22 @@ DB_USER = usr01
 DB_PASS = V46ALGyDsbi_Qzmc
 DB_DATABASE = mundial2026
 
+// railway PRO
+
+DB_HOST = yamabiko.proxy.rlwy.net
+DB_USER = root
+DB_PASS = McffLuLjqHfAwbsGOoeixVLKLbNCaexf
+DB_DATABASE = railway
+DB_PORT = 52568
+
+
 // railway
 
-DB_HOST = junction.proxy.rlwy.net
+DB_HOST = mysql.railway.internal
 DB_USER = root
-DB_PASS = hbaRCCSLQTHAEzKfDgcNxBiUPsJoagHL
+DB_PASS = bimxUmvDTkLDrUVPRuPWoBsxJvpWgQtX
 DB_DATABASE = railway
-DB_PORT = 59719
+DB_PORT = 3306
 
 //BD lagarto
 
@@ -30,6 +39,14 @@ DB_USER = root
 DB_PASSWORD = WzVAwSvFUiUiMvGPDjIfVgZtoUUeRBEZ
 DB_NAME = railway
 DB_PORT = 37016
+
+// railway
+
+DB_HOST = junction.proxy.rlwy.net
+DB_USER = root
+DB_PASS = hbaRCCSLQTHAEzKfDgcNxBiUPsJoagHL
+DB_DATABASE = railway
+DB_PORT = 59719
 
 
 SMTP_HOST = smtp.gmail.com

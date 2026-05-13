@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reunidos por un Balón 2026</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #1a1a2e;
+      font-family: Arial, sans-serif;
+      color: #ffffff;
+    }
+
+    .loading-container {
+      text-align: center;
+    }
+
+    .spinner {
+      width: 56px;
+      height: 56px;
+      border: 6px solid rgba(255, 255, 255, 0.2);
+      border-top-color: #e94560;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      margin: 0 auto 24px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+      opacity: 0.85;
+      margin-bottom: 32px;
+    }
+
+    .fallback-link {
+      font-size: 0.85rem;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      color: #a0aec0;
+    }
+
+    .fallback-link a {
+      color: #e94560;
+      text-decoration: none;
+    }
+
+    .fallback-link a:hover {
+      text-decoration: underline;
+    }
+
+    .fallback-link.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="loading-container">
+    <div class="spinner"></div>
+    <p class="loading-text">Cargando...</p>
+    <p class="fallback-link" id="fallback">
+      Si no eres redirigido automáticamente,
+      <a href="https://reunidosporunbalon26csa-production.up.railway.app/">haz clic aquí</a>.
+    </p>
+  </div>
+
+  <script>
+    // Redirect to root after page load so session cookies are preserved.
+    // window.location.replace() avoids adding an entry to the browser history.
+    window.addEventListener('load', function () {
+      window.location.replace('https://reunidosporunbalon26csa-production.up.railway.app/');
+    });
+
+    // Show the fallback link after 3 seconds in case the redirect is delayed.
+    setTimeout(function () {
+      var fallback = document.getElementById('fallback');
+      if (fallback) {
+        fallback.classList.add('visible');
+      }
+    }, 3000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="resources/css/style2.css">
+    <link rel="stylesheet" href="resources/css/ventanas.css">
+    <link rel="icon" href="resources/images/Participante.png">
+    <title>Correo</title>
+    <style>
+      .mail-card {
+        border: 1px solid #dfe5ec;
+        border-radius: 16px;
+        background: #fff;
+        box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+      }
+
+      .mail-toolbar {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: 2fr 1fr auto;
+        align-items: end;
+      }
+
+      .selection-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: #eef6ff;
+        color: #0a58ca;
+        font-weight: 600;
+      }
+
+      @media (max-width: 768px) {
+        .mail-toolbar {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+</head>
+<body>
+<% if (login) { %>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="/">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="/participantes">Participantes</a></li>
+          <li class="nav-item"><a class="nav-link" href="/puntosC">Puntos</a></li>
+          <li class="nav-item"><a class="nav-link" href="/quinielaC">Quiniela</a></li>
+          <li class="nav-item"><a class="nav-link" href="/partidos">Partidos</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container py-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+      <div>
+        <h1 class="mb-1">Modulo de Correo</h1>
+        <p class="text-muted mb-0">Selecciona registros, adjunta un archivo opcional y envia un mensaje personalizado.</p>
+      </div>
+      <div class="selection-pill">
+        <i class="fas fa-envelope"></i>
+        <span id="selectedCounter">0 seleccionados</span>
+      </div>
+    </div>
+
+    <div class="mail-card p-4 mb-4">
+      <form id="correoForm" enctype="multipart/form-data">
+        <div class="mail-toolbar mb-3">
+          <div>
+            <label for="subject" class="form-label fw-bold">Asunto</label>
+            <input type="text" id="subject" name="subject" class="form-control" placeholder="Asunto del correo" required>
+          </div>
+          <div>
+            <label for="attachment" class="form-label fw-bold">Adjunto</label>
+            <input type="file" id="attachment" name="attachment" class="form-control">
+          </div>
+          <div>
+            <button type="submit" id="sendButton" class="btn btn-primary w-100">
+              <i class="fas fa-paper-plane"></i> Enviar correo
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label for="message" class="form-label fw-bold">Mensaje</label>
+          <textarea id="message" name="message" class="form-control" rows="6" placeholder="El sistema agregara automaticamente el saludo con el nombre de cada participante." required></textarea>
+        </div>
+      </form>
+    </div>
+
+    <div class="mail-card p-4">
+      <table id="correoTable" class="table table-bordered table-striped align-middle text-center w-100">
+        <thead>
+          <tr class="text-white" style="background-color:#0d6efd;">
+            <th scope="col"><input type="checkbox" id="selectAll"></th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Alias</th>
+            <th scope="col">Contacto</th>
+            <th scope="col">Correo</th>
+            <th scope="col">Estatus</th>
+            <th scope="col">Fecha</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+<% } else { %>
+  <div class="container py-5">
+    <h1><strong><%= Alias %></strong></h1>
+    <a href="acceso" class="btn btn-primary">Ir a Login</a>
+  </div>
+<% } %>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+  <script>
+    const selectedRows = new Set();
+
+    function updateSelectedCounter() {
+      const counter = document.getElementById('selectedCounter');
+      counter.textContent = `${selectedRows.size} seleccionados`;
+    }
+
+    function syncVisibleCheckboxes() {
+      document.querySelectorAll('.row-selector').forEach((checkbox) => {
+        checkbox.checked = selectedRows.has(checkbox.value);
+      });
+
+      const rowCheckboxes = Array.from(document.querySelectorAll('.row-selector'));
+      const checkedVisible = rowCheckboxes.filter((checkbox) => checkbox.checked).length;
+      const selectAll = document.getElementById('selectAll');
+      selectAll.checked = rowCheckboxes.length > 0 && checkedVisible === rowCheckboxes.length;
+      selectAll.indeterminate = checkedVisible > 0 && checkedVisible < rowCheckboxes.length;
+      updateSelectedCounter();
+    }
+
+    const table = $('#correoTable').DataTable({
+      ajax: {
+        url: '/participantes_correo_dat',
+        dataSrc: ''
+      },
+      columns: [
+        {
+          data: 'Id_participante',
+          orderable: false,
+          searchable: false,
+          render: function (data) {
+            return `<input type="checkbox" class="form-check-input row-selector" value="${data}">`;
+          }
+        },
+        { data: 'Nombre' },
+        { data: 'Alias' },
+        { data: 'Contacto' },
+        { data: 'Correo' },
+        { data: 'Estatus' },
+        { data: 'Fecha' }
+      ],
+      pageLength: 20,
+      responsive: true,
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json'
+      },
+      lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todos']],
+      drawCallback: syncVisibleCheckboxes
+    });
+
+    document.addEventListener('change', (event) => {
+      if (event.target.classList.contains('row-selector')) {
+        const id = event.target.value;
+        if (event.target.checked) {
+          selectedRows.add(id);
+        } else {
+          selectedRows.delete(id);
+        }
+        syncVisibleCheckboxes();
+      }
+    });
+
+    document.getElementById('selectAll').addEventListener('change', (event) => {
+      document.querySelectorAll('.row-selector').forEach((checkbox) => {
+        checkbox.checked = event.target.checked;
+        if (event.target.checked) {
+          selectedRows.add(checkbox.value);
+        } else {
+          selectedRows.delete(checkbox.value);
+        }
+      });
+      syncVisibleCheckboxes();
+    });
+
+    document.getElementById('correoForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (selectedRows.size === 0) {
+        Swal.fire('Sin destinatarios', 'Selecciona al menos un registro.', 'warning');
+        return;
+      }
+
+      const form = event.currentTarget;
+      const formData = new FormData(form);
+      formData.append('selectedIds', JSON.stringify(Array.from(selectedRows)));
+
+      const sendButton = document.getElementById('sendButton');
+      sendButton.disabled = true;
+      sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando';
+
+      try {
+        const response = await fetch('/Correo/enviar', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(result.message || 'No fue posible enviar los correos.');
+        }
+
+        Swal.fire('Enviado', result.message, 'success');
+        form.reset();
+      } catch (error) {
+        Swal.fire('Error', error.message, 'error');
+      } finally {
+        sendButton.disabled = false;
+        sendButton.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar correo';
+      }
+    });
+  </script>
+</body>
+</html>

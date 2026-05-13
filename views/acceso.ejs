@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+    <link  rel="stylesheet" href="resources/css/ventanas.css" >
+    <script  src="resources/css/script.js"></script>
+    
+    <link rel="stylesheet" href="resources/css/style.css">
+    <link rel="stylesheet" href="resources/css/style2.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <style>
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .form-group input {
+        margin-top: 0;
+      }
+
+      .action-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .stack-row {
+        margin-top: 14px;
+      }
+
+      .action-row .btn-save,
+      .stack-row .btn-save,
+      .recover-actions .btn-save {
+        width: 100%;
+        margin-top: 0;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .recover-link {
+        display: inline-block;
+        margin-top: 10px;
+        color: #03A9F4;
+        cursor: pointer;
+        text-decoration: underline;
+        font-size: 14px;
+      }
+
+      .recover-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .recover-modal.is-open {
+        display: flex;
+      }
+
+      .recover-card {
+        width: 100%;
+        max-width: 420px;
+        background: #f2eee3;
+        border-radius: 12px;
+        padding: 28px 24px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+      }
+
+      .recover-card h3 {
+        margin: 0 0 8px 0;
+        color: #2C3034;
+      }
+
+      .recover-card p {
+        margin: 0 0 12px 0;
+        color: #555;
+        font-size: 14px;
+      }
+
+      .recover-card input {
+        width: 100%;
+      }
+
+      .recover-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+      }
+
+      .recover-actions .btn-save {
+        margin: 0;
+      }
+    </style>
+
+    
+</head>
+    
+<body>
+
+<div id="back">
+  <div class="backRight"></div>
+  <div class="backLeft"></div>
+</div>
+
+<div id="slideBox">
+  <div class="topLayer">
+    <div class="left">|
+      <div class="content">
+        <h2>Registro</h2>
+        <form action="/registra_save1" method="POST">
+          <div class="form-group">
+
+            <input type="text" placeholder="Nombre" id="Nombre" name="Nombre" required />
+            <input type="text" placeholder="Usuario" id="Alias" name="Alias" required/>
+            <input type="tel" placeholder="Teléfono" id="Contacto" name="Contacto" onkeypress="return solonumeros(event)" />
+            <input type="email" placeholder="Correo" id="Correo" name="Correo" />
+            <input type="Password" placeholder="Password" id="Pass" name="pass" required/>
+            
+
+            <div class="action-row">
+              <button type="submit" class="btn-save" tabindex="5">GUARDAR</button>
+              <a href="/" class="btn-save">SALIR</a>
+            </div>
+           
+          </div>
+
+        </form>
+
+        <div class="stack-row">
+          <button id="goLeft" class="btn-save">ACCESO</button>
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="content">
+        <h2>Acceso</h2>
+
+
+        <form action="/auth" method="POST">
+          <div class="form-group">
+
+            
+            <input type="text" placeholder="Usuario" id="Alias" name="user" required/>
+            <input type="Password" placeholder="Password" id="Pass" name="pass" required/>
+            
+
+            <div class="action-row">
+              <button type="submit" class="btn-save" tabindex="5">INGRESAR</button>
+              <a href="/" class="btn-save">SALIR</a>
+            </div>
+           
+          </div>
+
+        </form>
+
+        <div class="stack-row">
+          <button id="goRight" class="btn-save">REGISTRAR</button>
+        </div>
+        <div>
+          <span id="openRequest" class="recover-link">Solicitar contraseña</span>
+        </div>
+        <div>
+          <span id="openRecover" class="recover-link">Recuperar contraseña</span>
+        </div>
+      </div>
+    </div>
+
+
+      </div>
+    </div>
+      </div>
+</div>
+
+<div id="recoverModal" class="recover-modal" role="dialog" aria-modal="true">
+  <div class="recover-card">
+    <h3>Recuperar contraseña</h3>
+    <p>Escribe tu Alias, correo y la nueva contraseña.</p>
+
+    <form action="/recupera_pass" method="POST">
+      <input type="text" placeholder="Alias" id="recoverAlias" name="Alias" required />
+      <input type="email" placeholder="Correo" id="recoverCorreo" name="Correo" required />
+      <input type="password" placeholder="Nueva contraseña" id="recoverPass" name="Pass" required />
+      <input type="password" placeholder="Confirmar contraseña" id="recoverPass2" name="Pass2" required />
+
+      <div class="recover-actions">
+        <button type="submit" class="btn-save">ACTUALIZAR</button>
+        <button type="button" id="closeRecover" class="btn-save">CANCELAR</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="requestModal" class="recover-modal" role="dialog" aria-modal="true">
+  <div class="recover-card">
+    <h3>Solicitar contraseña</h3>
+    <p>Escribe tu Alias y correo para solicitar la contraseña.</p>
+
+    <form action="/solicita_pass" method="POST">
+      <input type="text" placeholder="Alias" id="requestAlias" name="Alias" required />
+      <input type="email" placeholder="Correo" id="requestCorreo" name="Correo" required />
+
+      <div class="recover-actions">
+        <button type="submit" class="btn-save">ENVIAR</button>
+        <button type="button" id="closeRequest" class="btn-save">CANCELAR</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+</body>
+
+</html>
+
+<script>
+
+  function solonumeros(e){
+    key=e.keyCode || e.which;
+    teclado=String.fromCharCode(key);
+    numeros='0123456789';
+    especiales="8-37-38-46";
+    teclado_especial=false;
+  
+    for(var i in especiales){
+      if(key==especiales[i]){
+          teclado_especial=true;
+      }
+      
+      if(numeros.indexOf(teclado)==-1 && !teclado_especial ){
+      return false;
+      }
+     }
+    }    
+
+  const recoverModal = document.getElementById('recoverModal');
+  const openRecover = document.getElementById('openRecover');
+  const closeRecover = document.getElementById('closeRecover');
+  const recoverAlias = document.getElementById('recoverAlias');
+  const requestModal = document.getElementById('requestModal');
+  const openRequest = document.getElementById('openRequest');
+  const closeRequest = document.getElementById('closeRequest');
+  const requestAlias = document.getElementById('requestAlias');
+
+  function getOpenModal() {
+    if (recoverModal && recoverModal.classList.contains('is-open')) {
+      return recoverModal;
+    }
+
+    if (requestModal && requestModal.classList.contains('is-open')) {
+      return requestModal;
+    }
+
+    return null;
+  }
+
+  function trapRecoverFocus(e) {
+    const activeModal = getOpenModal();
+
+    if (!activeModal || e.key !== 'Tab') {
+      return;
+    }
+
+    const focusable = activeModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if (!focusable.length) {
+      return;
+    }
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+
+  if (openRecover && recoverModal) {
+    openRecover.addEventListener('click', function () {
+      recoverModal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      if (recoverAlias) {
+        recoverAlias.focus();
+      }
+    });
+  }
+
+  if (closeRecover && recoverModal) {
+    closeRecover.addEventListener('click', function () {
+      recoverModal.classList.remove('is-open');
+      document.body.style.overflow = '';
+      if (openRecover) {
+        openRecover.focus();
+      }
+    });
+  }
+
+  if (openRequest && requestModal) {
+    openRequest.addEventListener('click', function () {
+      requestModal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      if (requestAlias) {
+        requestAlias.focus();
+      }
+    });
+  }
+
+  if (closeRequest && requestModal) {
+    closeRequest.addEventListener('click', function () {
+      requestModal.classList.remove('is-open');
+      document.body.style.overflow = '';
+      if (openRequest) {
+        openRequest.focus();
+      }
+    });
+  }
+
+  if (recoverModal || requestModal) {
+    document.addEventListener('keydown', trapRecoverFocus);
+  }
+
+  </script>
+
+  
+<% if (typeof alert != "undefined")  { %>
+  <script>
+  Swal.fire({
+    title:'<%= alertTitle %>',
+    text:'<%= alertMessage %>',
+    icon:'<%= alertIcon %>',
+    showConfirmButton: <%= showConfirmButton %>,
+    timer: <%= timer %>
+  }).then(()=>{
+    window.location='/<%= ruta %>'
+  })
+  </script>
+<% } %>

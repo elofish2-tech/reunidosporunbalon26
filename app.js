@@ -455,14 +455,13 @@ app.post('/auth', async (req, res)=> {
 					req.session.Estatus = participant.Estatus;
 					req.session.Folder = participant.Id_Folder;
 					
-					
-					console.log('Activo 0');
-					console.log('isActive: ' + isActive);
-					console.log('estatus: ' + estatus);
-					console.log('Folder ',req.session.Folder);
-					console.log('loggedin ',req.session.loggedin);
-					
-					
+					if (V_Log === 5) {
+						console.log('Activo 0');
+						console.log('isActive: ' + isActive);
+						console.log('estatus: ' + estatus);
+						console.log('Folder ',req.session.Folder);
+						console.log('loggedin ',req.session.loggedin);
+					}				
 					
 				} else {
 					if (V_Log === 0) {
@@ -1006,14 +1005,12 @@ app.get('/quiniela', (req, res)=> {
 //quinielaC
 app.get('/quinielaC', (req, res)=> {
 
-	console.log('Debug Folder QC ',req.session.Folder);
-	console.log(globalFolder);
-
 	if (V_Log === 5) {
+		console.log('Debug Folder QC ',req.session.Folder);
+	    console.log(globalFolder);
 		console.log('Debug QC ',req.session.loggedin);
 		console.log('Debug Q ',req.session.Alias);
 		console.log('Debug Q ',req.session.Id_participante);
-		
 	}
 	
 		if (req.session.loggedin) {

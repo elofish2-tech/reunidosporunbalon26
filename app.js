@@ -381,7 +381,7 @@ app.post('/auth', async (req, res)=> {
 //    let passwordHash = await bcrypt.hash(pass, 8);
 
 
-	if (V_Log === 0) {
+	if (V_Log === 5) {
 		console.log('Accesa 0: ' + user);
 	}
 	if (V_Log === 5) {
@@ -428,7 +428,7 @@ app.post('/auth', async (req, res)=> {
 				const fin = Date.now();
 
 				if (V_Log === 0) {
-					console.log(participant.Alias, 'Tiempo:', fin);
+					console.log(participant.Alias, 'Tiempo:', new Date(fin).toUTCString());
 				}
 
 				if (pass != participant.Pass) {
@@ -461,8 +461,8 @@ app.post('/auth', async (req, res)=> {
 						console.log('estatus: ' + estatus);
 						console.log('Folder ',req.session.Folder);
 						console.log('loggedin ',req.session.loggedin);
-					}				
-					
+					}
+
 				} else {
 					if (V_Log === 0) {
 						console.log('Espere aviso de activación');
@@ -487,12 +487,13 @@ app.post('/auth', async (req, res)=> {
 //				console.log('isActive: ' + isActive);
 
 				if (isActive) {
-					if (V_Log === 5) {					
-						console.log('isActive: 1' , req.session.loggedin);
-						console.log('estatus: ' , req.session.Estatus);
-						console.log('Folder ',req.session.Folder);
-						console.log('loggedin 1 ',req.session.loggedin);
-					}					
+                  if (V_Log === 5) {	
+					console.log('isActive: 1' , req.session.loggedin);
+					console.log('estatus: ' , req.session.Estatus);
+					console.log('Folder ',req.session.Folder);
+					console.log('loggedin 1 ',req.session.loggedin);
+				  }
+
 					req.session.save((err) => {
 						if (err) {
 							console.error('[auth] Error saving session:', err);
@@ -791,7 +792,7 @@ app.get('/', (req, res)=> {
 
 	globalFolder = 2;
 	
-	if (V_Log === 0) {
+	if (V_Log === 1) {
 		console.log('Folder Usr ',globalFolder);
 	}
 
@@ -1006,13 +1007,15 @@ app.get('/quiniela', (req, res)=> {
 app.get('/quinielaC', (req, res)=> {
 
 	if (V_Log === 5) {
-		console.log('Debug Folder QC ',req.session.Folder);
+	    console.log('Debug Folder QC ',req.session.Folder);
 	    console.log(globalFolder);
 		console.log('Debug QC ',req.session.loggedin);
 		console.log('Debug Q ',req.session.Alias);
 		console.log('Debug Q ',req.session.Id_participante);
 	}
 	
+	console.log('Debug Q ',req.session.Id_participante);
+
 		if (req.session.loggedin) {
 			res.render('quinielaC',{
 				login: true,

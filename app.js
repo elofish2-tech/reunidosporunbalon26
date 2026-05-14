@@ -484,16 +484,16 @@ app.post('/auth', async (req, res)=> {
 					console.error('[auth] Error sending login notification email:', error);
 				});
 
-				console.log('isActive: 0' , req.session.loggedin);
-				console.log('isActive: ' + isActive);
+//				console.log('isActive: 0' , req.session.loggedin);
+//				console.log('isActive: ' + isActive);
 
 				if (isActive) {
-					
-					console.log('isActive: 1' , req.session.loggedin);
-					console.log('estatus: ' , req.session.Estatus);
-					console.log('Folder ',req.session.Folder);
-					console.log('loggedin 1 ',req.session.loggedin);
-					
+					if (V_Log === 5) {					
+						console.log('isActive: 1' , req.session.loggedin);
+						console.log('estatus: ' , req.session.Estatus);
+						console.log('Folder ',req.session.Folder);
+						console.log('loggedin 1 ',req.session.loggedin);
+					}					
 					req.session.save((err) => {
 						if (err) {
 							console.error('[auth] Error saving session:', err);
@@ -1009,12 +1009,12 @@ app.get('/quinielaC', (req, res)=> {
 	console.log('Debug Folder QC ',req.session.Folder);
 	console.log(globalFolder);
 
-//	if (V_Log === 5) {
+	if (V_Log === 5) {
 		console.log('Debug QC ',req.session.loggedin);
 		console.log('Debug Q ',req.session.Alias);
 		console.log('Debug Q ',req.session.Id_participante);
 		
-//	}
+	}
 	
 		if (req.session.loggedin) {
 			res.render('quinielaC',{

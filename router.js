@@ -305,7 +305,7 @@ router.get('/participantes_correo_dat', (req, res)=>{
 
 router.get('/participantes_datF1', (req, res)=>{ 
        
-    console.log('Folder F1',global.globalFolder);
+ //   console.log('Folder F1',global.globalFolder);
  
     pool.query('SELECT L.Lugar Lugar, P.Alias Alias, P.Puntos Puntos FROM lugar L, participantes P where L.Id_participante = P.Id_participante and L.Id_Folder=?',[global.globalFolder] ,(error, results)=>{
          if(error){

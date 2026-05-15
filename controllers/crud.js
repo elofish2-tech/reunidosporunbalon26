@@ -27,7 +27,7 @@ function notifyParticipantUpdate(participant) {
         subjectPrefix: 'Registro : ',
         to: participant.Correo,
         text: [
-            'Usuario Activo  en mundial 2026 ya puedes iniciar con la captura de tu Quiniela',
+            'Usuario Activo  en Mundial_2026 ya puedes iniciar con la captura de tu Quiniela',
             '',
             'Alias: ' + participant.Alias,
             'Nombre: ' + participant.Nombre,

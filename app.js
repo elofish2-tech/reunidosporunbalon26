@@ -196,10 +196,9 @@ app.get('/register',(req, res)=>{
 app.get('/puntos', (req, res)=> {
 
 
-	console.log('Debug P ',req.session.Folder);
-	console.log(globalFolder);
-
 	if (V_Log === 5) {
+		console.log('Debug P ',req.session.Folder);
+	    console.log(globalFolder);
 		console.log('Debud ',req.session.loggedin);
 		console.log('Debud ',req.session.Alias);
 	}
@@ -820,13 +819,13 @@ app.get('/famL', (req, res)=> {
 	}
 
 	if (req.session.loggedin) {
-		res.render('ranking',{
+		res.render('calendario',{
 			login: true,
 			name: req.session.name,
 			Folder: 1			
 		});		
 	} else {
-		res.render('ranking',{
+		res.render('calendario',{
 			login:false,
 			name:'Debe iniciar sesión',	
 			Folder: 1		
@@ -865,20 +864,18 @@ app.get('/CSA', (req, res)=> {
 
 	globalFolder = 2;
 
-	console.log(globalFolder);
-
 	if (V_Log === 5) {
 		console.log(globalFolder);
 	}
 
 	if (req.session.loggedin) {
-		res.render('ranking',{
+		res.render('calendario',{
 			login: true,
 			name: req.session.name,
 			Folder: 2			
 		});		
 	} else {
-		res.render('ranking',{
+		res.render('calendario',{
 			login:false,
 			name:'Debe iniciar sesión',	
 			Folder: 2		
@@ -889,12 +886,12 @@ app.get('/CSA', (req, res)=> {
 
 app.get('/ranking', (req, res)=> {
 
-	if (V_Log === 0) {
+	if (V_Log === 1) {
 		console.log(globalFolder);
 	}
 
 	if( globalFolder == 0  ) {  
-		if (V_Log === 0) {
+		if (V_Log === 1) {
 			console.log(globalFolder);
 		}
 		res.render('resultados',{
@@ -902,7 +899,7 @@ app.get('/ranking', (req, res)=> {
 			name: req.session.name,			
 		});	
 	} else {	
-		if (V_Log === 0) {
+		if (V_Log === 1) {
 			console.log(globalFolder);
 		}
 		res.render('ranking',{

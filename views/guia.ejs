@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="resources/css/style2.css">
     <link  rel="stylesheet" href="resources/css/ventanas.css" >
     <link  rel="stylesheet" href="resources/css/estilos.css" >
-    <link rel="icon" href="resources/images/Mundial 2026B.png">
+    <link rel="icon" href="resources/images/Mundial_2026.png">
 
-    <title>Mundial 2026 </title>
+    <title>Mundial_2026 </title>
 </head>
 <body>
 
@@ -33,7 +33,7 @@
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Mundial 2026
+          Mundial_2026
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li><a class="dropdown-item" href="/calendario">Calendario</a></li>
@@ -94,23 +94,23 @@
       <div class="Ranking">
          
         <div class="col">
-          <img src="resources/images/Guia1.png" class="rounded float-end" alt="..." >
+          <img src="<%= process.env.IMAGE_BASE_URL %>/Guia1.png" alt="Imagen del Guia 1">
         </div>
 <p>&nbsp;</p>
         <div class="col">
-          <img src="resources/images/Guia2.png" class="rounded float-end" alt="..." >
+          <img src="<%= process.env.IMAGE_BASE_URL %>/Guia2.png" alt="Imagen del Guia 2">
         </div>
 <p>&nbsp;</p>
         <div class="col">
-          <img src="resources/images/Guia3.png" class="rounded float-end" alt="..." >
+          <img src="<%= process.env.IMAGE_BASE_URL %>/Guia3.png" alt="Imagen del Guia 3">
         </div>
  <p>&nbsp;</p>       
         <div class="col">
-          <img src="resources/images/Guia4.png" class="rounded float-end" alt="..." >
+          <img src="<%= process.env.IMAGE_BASE_URL %>/Guia4.png" alt="Imagen del Guia 4">
         </div>
 <p>&nbsp;</p>
         <div class="col">
-          <img src="resources/images/Guia5.png" class="rounded float-end" alt="..." >
+          <img src="<%= process.env.IMAGE_BASE_URL %>/Guia5.png" alt="Imagen del Guia 5">
         </div>
 
 <p>&nbsp;</p>
@@ -138,11 +138,12 @@
 
         <div class="Ranking_img2">
  
-          <h1>  2026 CSA</h1>
-          <img src="resources/images/trofeo.png" />
+          <h1>  2026 </h1>
+          <img src="<%= process.env.IMAGE_BASE_URL %>/trofeo.png" alt="Imagen del trofeo">
           <p>&nbsp;</p>
-          <img src="resources/images/trofeo.png" />
-  
+          <img src="<%= process.env.IMAGE_BASE_URL %>/Calendario1.png" alt="Imagen del Calendario 1">
+          <p>&nbsp;</p>
+          <img src="<%= process.env.IMAGE_BASE_URL %>/Calendario2.png" alt="Imagen del Calendario 2">
         </div>
  
       </div>
